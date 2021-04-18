@@ -143,6 +143,21 @@
           adjustSlider(sliderPct);
         });
       }
+      // console.log(options.disappear)
+
+      // if (options.disappear) {
+      //   console.log(beforeImg.width())
+      //   if (imgWidth <= beforeImg.width()) {
+      //     beforeImg.css('display', 'none')
+      //   } else {
+      //     beforeImg.css('display', 'block')
+      //   }
+      //   if (imgWidth <= afterImg.width()) {
+      //     beforeImg.css('display', 'none')
+      //   } else {
+      //     beforeImg.css('display', 'block')
+      //   }
+      // }
 
       $(window).trigger("resize.twentytwenty");
     });
