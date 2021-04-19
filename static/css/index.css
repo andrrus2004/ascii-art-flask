@@ -19,16 +19,16 @@ img {
     /*height: ;*/
 }
 .files input {
-    outline: 2px dashed #92b0b3;
+    outline: 2px dashed #0d6efd;
     outline-offset: -10px;
     -webkit-transition: outline-offset .15s ease-in-out, background-color .15s linear;
     transition: outline-offset .15s ease-in-out, background-color .15s linear;
-    padding: 120px 0px 85px 35%;
+    padding: 120px 0 85px 35%;
     text-align: center !important;
     margin: 0;
     width: 100% !important;
 }
-.files input:focus{     outline: 2px dashed #92b0b3;  outline-offset: -10px;
+.files input:focus{     outline: 2px dashed #0a5ad2;  outline-offset: -10px;
     -webkit-transition: outline-offset .15s ease-in-out, background-color .15s linear;
     transition: outline-offset .15s ease-in-out, background-color .15s linear; border:1px solid #92b0b3;
  }
@@ -48,6 +48,19 @@ img {
     background-repeat: no-repeat;
 }
 .color input{ background-color:#f1f1f1;}
+
+.error input {
+    outline: 2px dashed #dc3545;
+}
+.error input:focus{
+    outline: 2px dashed #dc3545;
+    border:1px solid #dc3545;
+ }
+.error:before {
+    content: "Формат загруженного файла не поддерживается" !important;
+    color: #dc3545 !important;
+}
+
 .files:before {
     position: absolute;
     bottom: 10px;
@@ -55,12 +68,11 @@ img {
     width: 100%;
     right: 0;
     height: 57px;
-    content: " or drag it here. ";
+    content: "Или перетащите файл сюда";
     display: block;
     margin: 0 auto;
     color: #2ea591;
     font-weight: 600;
-    text-transform: capitalize;
     text-align: center;
 }
 /*.box__dragndrop,*/

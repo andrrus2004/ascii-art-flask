@@ -8,3 +8,18 @@ $(function(){
     click_to_move: false // Allow a user to click (or tap) anywhere on the image to move the slider to that location.
   });
 });
+
+var inputError = false;
+$('#imageInput').change(function() {
+  var myFile = $(this).prop('files');
+  if (!myFile[0]['type'].includes('image')) {
+    $('.files').addClass('error');
+    inputError = true;
+  } else {
+    if (inputError) {
+      $('.files').removeClass('error');
+      inputError = false;
+    }
+    console.log('Всё ок!');
+  }
+});
