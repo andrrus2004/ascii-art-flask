@@ -12,7 +12,8 @@ $(function(){
 var inputError = false;
 $('#imageInput').change(function() {
   var myFile = $(this).prop('files');
-  if (!myFile[0]['type'].includes('image')) {
+  console.log(myFile);
+  if (myFile.length !== 0 && !myFile[0]['type'].includes('image')) {
     $('.files').addClass('error');
     inputError = true;
   } else {
@@ -21,5 +22,6 @@ $('#imageInput').change(function() {
       inputError = false;
     }
     console.log('Всё ок!');
+    $('#submit-btn').click();
   }
 });
