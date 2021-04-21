@@ -45,9 +45,11 @@
 
     <!--    Converting    -->
     <div class=" text-center {{convert}} convert">
-        <img src="../static/uploads/{{imageName}}"/>
+<!--        <img src="../static/uploads/{{imageName}}"/>-->
 <!--        <textarea class="form-control" id="ascii-text" style="font-size: {{font}}pt; width: {{width}}px; height: {{height}}px;"></textarea>  , width=size[0], height=size[1]-->
-            <textarea class="form-control" id="ascii-text" style="font-size: {{font}}pt; font-family: 'Courier New', serif; width: 1128px; height: 914px; margin: 15px auto;">{{ascii}}</textarea>
+<!--            <textarea class="form-control" id="ascii-text" style="font-size: {{font}}pt; font-family: 'Courier New', serif; width: 1128px; height: 914px; margin: 15px auto;"></textarea>-->
+<!--        <textarea class="form-control" id="ascii-text" style="font-size: {{font}}pt; font-family: 'Courier New', serif; margin: 15px auto; overflow-y: hidden !important;"></textarea>-->
+        <div contenteditable="true" class="form-control" id="ascii-text" style="font-size: {{font}}pt; font-family: 'Courier New', serif; {{extra}}">{{ascii}}</div>
 <!--        <textarea class="form-control" id="ascii-text" style="font-size: 9pt;"></textarea>-->
     </div>
 

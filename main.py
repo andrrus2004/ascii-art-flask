@@ -1,4 +1,4 @@
-from flask import Flask, flash, request, redirect, render_template
+from flask import Flask, flash, request, redirect, render_template, Markup
 from werkzeug.utils import secure_filename
 from PIL import Image
 import os
@@ -22,10 +22,11 @@ def img_to_ascii(image, settings={}):
     line_count = settings.get(LINE_COUNT, 100)
     font_size = settings.get(FONT_SIZE, 5)
     groups = settings.get(GROUPS, [LET_NUM, PUNCTUATION, SPECIAL])
-    color = settings.get(COLOR, BLACK)
+    color = settings.get(COLOR, COLOURED)
     saturation = settings.get(SATURATION, 100)
     width, height = image.size
 
+    extra = ''
     # font = QtGui.QFont("Courier New", font_size)
     # fm = QFontMetrics(font)
     let_wid = FONT_SIZE_LIST[font_size - 1][0]
@@ -37,6 +38,7 @@ def img_to_ascii(image, settings={}):
     if color == BLACK:
         all_let = all_let_black
     if color == COLOURED:
+        extra = 'background-color: black;'
         all_let = all_let_coloured
     if color == WHITE:
         all_let = all_let_white
@@ -71,15 +73,18 @@ def img_to_ascii(image, settings={}):
                 sr_red = 255 - (255 - sr_red) * (saturation / 100)
                 sr_green = 255 - (255 - sr_green) * (saturation / 100)
                 sr_blue = 255 - (255 - sr_blue) * (saturation / 100)
-                result_color += f'<span style="color: rgb({sr_red}, {sr_green}, {sr_blue});">{letter}</span>'
+                result_color += f'<font style="color: rgb({sr_red}, {sr_green}, {sr_blue});">{letter}</font>'
             r, g, b = [], [], []
         result += '\n'
-        result_color += '<br>'
+        result_color += '\n'
     result = result[:-1]
-    result_color = result_color[:-4]
+    result_color = result_color[:-1]
+    # result_color = result_color[:-4]
     result = result.replace('\t', '\\')
-    print(result.replace('\n', '&#13;&#10;'), font_size, (line_count, width // w - 1))
-    return result, result_color, (let_wid * (width // w), let_hei * line_count), (line_count, width // w - 1), font_size
+    if color == COLOURED:
+        result = result_color
+    print(result.replace('\n', '<br/>'), font_size, (line_count, width // w - 1), (let_wid * (width // w), let_hei * line_count))
+    return result, result_color, (let_wid * (width // w), let_hei * line_count), (line_count, width // w - 1), font_size, extra
 
 
 def convert(filename):
@@ -119,9 +124,9 @@ def upload_file():
         # filename = secure_filename(file.filename)
         filename = file.filename
         file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-        text, color, size, rowcol, font_size = convert(filename)
-        return render_template('index.html', load='hide', convert='', imageName=filename, ascii=text,
-                               font=font_size)
+        text, color, size, rowcol, font_size, extra = convert(filename)
+        return render_template('index.html', load='hide', convert='', imageName=filename, ascii=Markup(text),
+                               font=font_size, extra=extra)
 
 
 if __name__ == '__main__':
