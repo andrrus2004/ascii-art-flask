@@ -82,7 +82,7 @@ def img_to_ascii(image, settings={}):
     # result_color = result_color[:-4]
     result = result.replace('\t', '\\')
     if color == COLOURED:
-        result = result_color
+        result = Markup(result_color)
     print(result.replace('\n', '<br/>'), font_size, (line_count, width // w - 1), (let_wid * (width // w), let_hei * line_count))
     return result, result_color, (let_wid * (width // w), let_hei * line_count), (line_count, width // w - 1), font_size, extra
 
@@ -125,7 +125,7 @@ def upload_file():
         filename = file.filename
         file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
         text, color, size, rowcol, font_size, extra = convert(filename)
-        return render_template('index.html', load='hide', convert='', imageName=filename, ascii=Markup(text),
+        return render_template('index.html', load='hide', convert='', imageName=filename, ascii=text,
                                font=font_size, extra=extra)
 
 

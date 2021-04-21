@@ -27,9 +27,14 @@ header div {
     max-height: 500px;
 }
 
+.card-body img {
+    max-width: 100%;
+    margin-bottom: 15px;
+}
+
 #ascii-text {
     font-family: "Courier New", serif !important;
-    margin: 15px auto 0;
+    margin: 15px auto;
     /*text-align: center;*/
     white-space: pre;
     /*width: 1000px;*/

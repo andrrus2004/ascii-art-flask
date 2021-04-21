@@ -25,3 +25,9 @@ $('#imageInput').change(function() {
     $('#submit-btn').click();
   }
 });
+
+$( document ).ready(function() {
+    html2canvas(document.querySelector("#ascii-text")).then(canvas => {
+    console.log(canvas.toDataURL());
+});
+});
