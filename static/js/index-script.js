@@ -21,7 +21,19 @@ $('#imageInput').change(function() {
         inputError = false;
         }
         console.log('Всё ок!');
-        $('#submit-btn').click();
+        console.log(myFile)
+        var formData = new FormData();
+        formData.append('img-file', $("#imageInput")[0].files[0]);
+        $.ajax({
+            url: '/load-image',
+            type: 'POST',
+            contentType: false,
+			processData: false,
+			dataType : 'json',
+            data: formData
+        }).done(function (data) {
+            console.log(data);
+        });
         $('.color-settings').removeClass('hide');
         $('#load-image').addClass('hide');
     }
@@ -85,10 +97,6 @@ $('#colored-btn').click(function() {
 });
 
 $(document).ready(function() {
-    if ($('#load-image').hasClass('loaded')) {
-        $('.color-settings').removeClass('hide');
-        $('#load-image').addClass('hide');
-    }
     html2canvas(document.querySelector("#ascii-text")).then(canvas => {
         console.log(canvas.toDataURL());
     });

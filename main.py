@@ -35,7 +35,6 @@ def img_to_ascii(image, settings={}):
     saturation = settings.get(SATURATION, 100)
     width, height = image.size
 
-    extra = ''
     # font = QtGui.QFont("Courier New", font_size)
     # fm = QFontMetrics(font)
     let_wid = FONT_SIZE_LIST[font_size - 1][0]
@@ -88,13 +87,14 @@ def img_to_ascii(image, settings={}):
         result_color += '\n'
     result = result[:-1]
     result_color = result_color[:-1]
-    # result_color = result_color[:-4]
     result = result.replace('\t', '\\')
     if color == COLOURED:
         result = Markup(result_color)
-    print(result.replace('\n', '<br/>'), font_size, (line_count, width // w - 1),
-          (let_wid * (width // w), let_hei * line_count))
-    return result, result_color, (let_wid * (width // w), let_hei * line_count), (line_count, width // w - 1), font_size, extra
+    # print(result.replace('\n', '<br/>'), font_size, (line_count, width // w - 1),
+    #       (let_wid * (width // w), let_hei * line_count))
+    # return result, result_color, (let_wid * (width // w), let_hei * line_count), (
+    # line_count, width // w - 1), font_size, extra
+    return result, font_size
 
 
 def convert(filename):
@@ -126,7 +126,7 @@ def upload_form():
     return render_template('index.html')
 
 
-@app.route('/', methods=['POST'])
+@app.route('/load-image', methods=['POST'])
 def load_image():
     global FILENAME
     if request.method == 'POST':
@@ -138,13 +138,14 @@ def load_image():
         FILENAME = file.filename
         print(FILENAME)
         file.save(os.path.join(app.config['UPLOAD_FOLDER'], FILENAME))
-        return render_template('index.html', imageLoad='loaded')
+        return 'True'
+        # return render_template('index.html', imageLoad='loaded')
 
 
 @app.route('/get-ascii', methods=['GET'])
 def upload_file():
     if request.method == 'GET':
-        text, color, size, rowcol, font_size, extra = convert(FILENAME)
+        text, font_size = convert(FILENAME)
         return {'ascii': text, 'font_size': font_size}
 
 
