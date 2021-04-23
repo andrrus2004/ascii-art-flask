@@ -3,7 +3,6 @@ from werkzeug.utils import secure_filename
 from PIL import Image
 import os
 
-
 FONT_SIZE_LIST = [(1, 3), (2, 3), (2, 4), (3, 6), (4, 8), (5, 8), (5, 12), (7, 14), (7, 15), (8, 16),
                   (9, 17), (10, 18), (10, 20), (11, 21), (12, 22), (13, 23), (14, 25), (14, 27), (15, 29), (16, 30),
                   (17, 31), (17, 32), (19, 33), (19, 36), (20, 36), (21, 39), (22, 39), (22, 39), (23, 42), (24, 42)]
@@ -16,6 +15,16 @@ LET_NUM, PUNCTUATION, SPECIAL = 'let_num', 'punctuation', 'special'
 COLOR = 'color'
 BLACK, WHITE, COLOURED = 'black', 'white', 'coloured'
 SATURATION = 'saturation'
+
+SETTINGS = {
+    AUTO_SIZE: True,
+    LINE_COUNT: 50,
+    FONT_SIZE: 5,
+    GROUPS: [LET_NUM, PUNCTUATION, SPECIAL],
+    COLOR: BLACK,
+    SATURATION: 100
+}
+FILENAME = ''
 
 
 def img_to_ascii(image, settings={}):
@@ -83,7 +92,8 @@ def img_to_ascii(image, settings={}):
     result = result.replace('\t', '\\')
     if color == COLOURED:
         result = Markup(result_color)
-    print(result.replace('\n', '<br/>'), font_size, (line_count, width // w - 1), (let_wid * (width // w), let_hei * line_count))
+    print(result.replace('\n', '<br/>'), font_size, (line_count, width // w - 1),
+          (let_wid * (width // w), let_hei * line_count))
     return result, result_color, (let_wid * (width // w), let_hei * line_count), (line_count, width // w - 1), font_size, extra
 
 
@@ -94,7 +104,9 @@ def convert(filename):
     h = height // 50
     sort_font_size_list = sorted(FONT_SIZE_LIST, key=lambda x: abs(h - x[1]))
     font_size = FONT_SIZE_LIST.index(sort_font_size_list[0]) + 1
-    return img_to_ascii(image, {FONT_SIZE: font_size, LINE_COUNT: 50})
+    if SETTINGS[AUTO_SIZE]:
+        SETTINGS[FONT_SIZE] = font_size
+    return img_to_ascii(image, SETTINGS)
 
 
 app = Flask(__name__)
@@ -111,22 +123,38 @@ app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 @app.route('/')
 def upload_form():
-    return render_template('index.html', load='', convert='hide')
+    return render_template('index.html')
 
 
 @app.route('/', methods=['POST'])
-def upload_file():
+def load_image():
+    global FILENAME
     if request.method == 'POST':
         if 'img-file' not in request.files:
             flash('No file part')
-            return render_template('index.html', load='', convert='hide')
+            return render_template('index.html')
         file = request.files['img-file']
         # filename = secure_filename(file.filename)
-        filename = file.filename
-        file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-        text, color, size, rowcol, font_size, extra = convert(filename)
-        return render_template('index.html', load='hide', convert='', imageName=filename, ascii=text,
-                               font=font_size, extra=extra)
+        FILENAME = file.filename
+        print(FILENAME)
+        file.save(os.path.join(app.config['UPLOAD_FOLDER'], FILENAME))
+        return render_template('index.html', imageLoad='loaded')
+
+
+@app.route('/get-ascii', methods=['GET'])
+def upload_file():
+    if request.method == 'GET':
+        text, color, size, rowcol, font_size, extra = convert(FILENAME)
+        return {'ascii': text, 'font_size': font_size}
+
+
+@app.route('/settings', methods=['POST'])
+def get_ajax_settings():
+    data = request.json
+    for key, value in data.items():
+        if key in SETTINGS:
+            SETTINGS[key] = value
+    return 'True'
 
 
 if __name__ == '__main__':

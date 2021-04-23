@@ -34,7 +34,7 @@
     <h1>Конвертируйте изображения в ASCII графику</h1>
 
     <!--    Image uploading    -->
-    <div class="container {{load}}">
+    <div class="container {{imageLoad}}" id="load-image">
 	      <form method="post" action="/" id="#" enctype="multipart/form-data">
               <div class="form-group files">
                   <input class="form-control form-control-lg" id="imageInput" name="img-file" type="file">
@@ -44,44 +44,55 @@
 	</div>
 
     <!--    Converting    -->
-    <div class=" text-center {{convert}} convert">
+    <div class=" text-center hide convert" id="convert-image">
 <!--        <img src="../static/uploads/{{imageName}}"/>-->
 <!--        <textarea class="form-control" id="ascii-text" style="font-size: {{font}}pt; width: {{width}}px; height: {{height}}px;"></textarea>  , width=size[0], height=size[1]-->
 <!--            <textarea class="form-control" id="ascii-text" style="font-size: {{font}}pt; font-family: 'Courier New', serif; width: 1128px; height: 914px; margin: 15px auto;"></textarea>-->
 <!--        <textarea class="form-control" id="ascii-text" style="font-size: {{font}}pt; font-family: 'Courier New', serif; margin: 15px auto; overflow-y: hidden !important;"></textarea>-->
-        <div contenteditable="true" class="form-control" id="ascii-text" style="font-size: {{font}}pt; font-family: 'Courier New', serif; {{extra}}">{{ascii}}</div>
+        <div contenteditable="true" class="form-control" id="ascii-text" style="font-size: {{font}}pt;">{{ascii}}</div>
 <!--        <textarea class="form-control" id="ascii-text" style="font-size: 9pt;"></textarea>-->
     </div>
 
-    <div class="container">
+    <div class="container hide color-settings">
         <div class="row row-cols-1 mb-3 text-center justify-content-md-center">
             <div class="col-4">
-                <div class="card mb-4 rounded-3 shadow-sm">
-                    <div class="card-header py-3">
+                <div class="card mb-4 rounded-3 shadow-sm" id="black-card">
+                    <div class="card-header py-3" id="black-ch">
                         <h4 class="my-0 fw-normal">Обычный</h4>
                     </div>
                     <div class="card-body">
                         <img class='rounded' src="../static/img/black.png" >
-                        <button type="button" class="w-100 btn btn-lg btn-primary">Выбрать</button>
+                        <button type="button" class="w-100 btn btn-lg btn-primary" id="black-btn">Выбрать</button>
                     </div>
                 </div>
             </div>
             <div class="col-4">
-                <div class="card mb-4 rounded-3 shadow-sm border-primary">
-                    <div class="card-header py-3 text-white bg-primary border-primary">
+                <div class="card mb-4 rounded-3 shadow-sm" id="colored-card">
+                    <div class="card-header py-3" id="colored-ch">
                         <h4 class="my-0 fw-normal">Цветной</h4>
                     </div>
                     <div class="card-body">
                         <img class='rounded' src="../static/img/colored.png">
-                        <button type="button" class="w-100 btn btn-lg btn-primary" disabled>Выбрать</button>
+                        <button type="button" class="w-100 btn btn-lg btn-primary" id="colored-btn">Выбрать</button>
                     </div>
                 </div>
             </div>
+<!--            <div class="col-4">-->
+<!--                <div class="card mb-4 rounded-3 shadow-sm border-primary">-->
+<!--                    <div class="card-header py-3 text-white bg-primary border-primary">-->
+<!--                        <h4 class="my-0 fw-normal">Цветной</h4>-->
+<!--                    </div>-->
+<!--                    <div class="card-body">-->
+<!--                        <img class='rounded' src="../static/img/colored.png">-->
+<!--                        <button type="button" class="w-100 btn btn-lg btn-primary" disabled>Выбрать</button>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </div>-->
         </div>
     </div>
 
 
-    <div style="height: 1000px"></div>
+    <div style="height: 1000px" ></div>
 
     <div class="row g-0">
         <div class="col-6">
