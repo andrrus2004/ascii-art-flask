@@ -1,6 +1,7 @@
 from flask import Flask, flash, request, redirect, render_template, Markup
 from werkzeug.utils import secure_filename
 from PIL import Image
+import sqlite3
 import os
 
 FONT_SIZE_LIST = [(1, 3), (2, 3), (2, 4), (3, 6), (4, 8), (5, 8), (5, 12), (7, 14), (7, 15), (8, 16),
@@ -25,6 +26,8 @@ SETTINGS = {
     SATURATION: 100
 }
 FILENAME = ''
+USER = {}
+LOGIN = False
 
 
 def img_to_ascii(image, settings={}):
@@ -126,6 +129,44 @@ def upload_form():
     return render_template('index.html')
 
 
+@app.route('/profile')
+def profile():
+    login = USER.get('login', 'Не указан')
+    password = USER.get('password', 'Не указан')
+    email = USER.get('email', 'Не указан')
+    name = USER.get('name', 'Не указано')
+    surname = USER.get('surname', 'Не указана')
+    return render_template('profile.html', login=login, password=password, email=email, name=name, surname=surname)
+
+
+@app.route('/log-out', methods=['POST'])
+def log_out():
+    if request.method == 'POST':
+        LOGIN = False
+        USER = {}
+        return render_template('index.html')
+
+
+@app.route('/registration')
+def registration():
+    return render_template('registration.html')
+
+
+@app.route('/new-user', methods=['POST'])
+def new_user():
+    global USER, LOGIN
+    if request.method == 'POST':
+        data = request.json
+        con = sqlite3.connect("static/database/Converter.db")
+        cur = con.cursor()
+        cur.execute(f"INSERT INTO users (login, password, email, name, surname) VALUES "
+                    f"('{data['login']}', '{data['password']}', '{data['email']}', '{data['name']}', '{data['surname']}')")
+        con.commit()
+        USER = data
+        LOGIN = True
+        return 'true'
+
+
 @app.route('/load-image', methods=['POST'])
 def load_image():
     global FILENAME
@@ -166,6 +207,7 @@ def get_ajax_settings():
                 SETTINGS[key] = bool(value)
             else:
                 SETTINGS[key] = value
+    print(SETTINGS)
     return 'True'
 
 

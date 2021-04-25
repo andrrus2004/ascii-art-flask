@@ -120,7 +120,7 @@ $('#colored-btn').click(function() {
     });
 });
 
-$('#save-settings').click(function() {
+$("#settings-form").submit(function() {
     var groups_input = Array()
     if ($('#let_num').is(':checked')) {
         groups_input.push('let_num');
@@ -138,6 +138,7 @@ $('#save-settings').click(function() {
         data: JSON.stringify({
             font_size: $("#font_size").val(),
             line_count: $("#lines_count").val(),
+            auto_size: false,
             groups: groups_input
         })
     }).done(function (data) {
@@ -154,6 +155,7 @@ $('#save-settings').click(function() {
                 $('#ascii-text').css("background-color", 'white');
             }
             var font = data['font_size'].toString() + 'pt';
+            console.log(font);
             $('#ascii-text').css("font-size", font);
             // load_settings();
         });
@@ -166,6 +168,35 @@ $('#save-settings').click(function() {
         // $('#black-card').removeClass('border-primary');
         // $('#black-btn').prop('disabled', false);
     });
+    return false;
+});
+
+$('#let_num').click(function() {
+    if (!($('#let_num').is(':checked') || $('#punctuation').is(':checked') || $('#special').is(':checked'))) {
+        $('#save-settings').prop('disabled', true);
+    } else {
+        $('#save-settings').prop('disabled', false);
+    }
+});
+
+$('#punctuation').click(function() {
+    if (!($('#let_num').is(':checked') || $('#punctuation').is(':checked') || $('#special').is(':checked'))) {
+        $('#save-settings').prop('disabled', true);
+    } else {
+        $('#save-settings').prop('disabled', false);
+    }
+});
+
+$('#special').click(function() {
+    if (!($('#let_num').is(':checked') || $('#punctuation').is(':checked') || $('#special').is(':checked'))) {
+        $('#save-settings').prop('disabled', true);
+    } else {
+        $('#save-settings').prop('disabled', false);
+    }
+});
+
+$('#registration-btn').click(function() {
+    window.location.href = '/registration';
 });
 
 $(document).ready(function() {
