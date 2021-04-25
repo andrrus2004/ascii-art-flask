@@ -32,6 +32,10 @@ header div {
     margin-bottom: 15px;
 }
 
+/*.color-settings {*/
+/*    margin-bottom: 10px;*/
+/*}*/
+
 #ascii-text {
     font-family: "Courier New", serif !important;
     margin: 15px auto;
@@ -45,8 +49,12 @@ header div {
     /*background-color: black;*/
 }
 
-#submit-btn {
-    display: none;
+.detail-settings {
+    font-size: 120%;
+}
+
+.form-check-inline {
+    font-size: 90%;
 }
 
 .files input {

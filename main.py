@@ -142,11 +142,17 @@ def load_image():
         # return render_template('index.html', imageLoad='loaded')
 
 
+@app.route('/get-settings', methods=['GET'])
+def get_settings():
+    if request.method == 'GET':
+        return SETTINGS
+
+
 @app.route('/get-ascii', methods=['GET'])
 def upload_file():
     if request.method == 'GET':
         text, font_size = convert(FILENAME)
-        return {'ascii': text, 'font_size': font_size}
+        return {'ascii': text, 'font_size': font_size, 'color': SETTINGS[COLOR]}
 
 
 @app.route('/settings', methods=['POST'])
@@ -154,7 +160,12 @@ def get_ajax_settings():
     data = request.json
     for key, value in data.items():
         if key in SETTINGS:
-            SETTINGS[key] = value
+            if key == FONT_SIZE or key == LINE_COUNT:
+                SETTINGS[key] = int(value)
+            elif key == AUTO_SIZE:
+                SETTINGS[key] = bool(value)
+            else:
+                SETTINGS[key] = value
     return 'True'
 
 

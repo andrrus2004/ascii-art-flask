@@ -23,8 +23,8 @@
         <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
             <li><a href="#" class="nav-link px-2 link-secondary">ASCII Art Converter</a></li>
             <li><a href="#" class="nav-link px-2 link-dark">Конвертировать</a></li>
+            <li><a href="#" class="nav-link px-2 link-dark">Примеры</a></li>
             <li><a href="#" class="nav-link px-2 link-dark">Поддержка</a></li>
-            <li><a href="#" class="nav-link px-2 link-dark">Контакты</a></li>
         </ul>
         <div class="col-md-3 text-end">
             <button type="button" class="btn btn-outline-primary me-2">Вход</button>
@@ -87,6 +87,45 @@
 <!--                    </div>-->
 <!--                </div>-->
 <!--            </div>-->
+        </div>
+    </div>
+    <div class="container detail-settings hide" id="detail-settings">
+        <div class="row row-cols-1 mb-3 justify-content-md-center">
+            <form class="col-6">
+                <div class="mb-3">
+                    <label for="lines_count" class="form-label">Количесвто строк</label>
+                    <input type="number" class="form-control" id="lines_count" aria-describedby="emailHelp" min="1" max="300">
+                    <div id="lneCountHelp" class="form-text">Количество строк конвертированного изображения</div>
+                </div>
+                <div class="mb-3">
+                    <label for="font-size" class="form-label">Размер символов</label>
+                    <input type="number" class="form-control" id="font_size" min="1" max="30">
+                    <div id="fontSizeHelp" class="form-text">Рахмер символов конвертированного изображения</div>
+                </div>
+<!--                <div class="mb-3 form-check">-->
+<!--                    <input type="checkbox" class="form-check-input" id="exampleCheck1">-->
+<!--                    <label class="form-check-label" for="exampleCheck1">Check me out</label>-->
+<!--                </div>-->
+                <label for="font-size" class="form-label">Используемые символы<br/></label>
+                <div class="mb-3 justify-content-md-center">
+<!--                    <label for="font-size" class="form-label">Используемые символы<br/></label>-->
+                    <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="checkbox" id="let_num" value="option1">
+                            <label class="form-check-label" for="let_num">Буквы и цифры</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" id="punctuation" value="option2">
+                        <label class="form-check-label" for="punctuation">Знаки препинания</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" id="special" value="option3">
+                        <label class="form-check-label" for="special">Специальные символы</label>
+                    </div>
+                </div>
+                <div class="text-center">
+                <button class="btn btn-lg btn-primary" id="save-settings">Соханить</button>
+                    </div>
+            </form>
         </div>
     </div>
 

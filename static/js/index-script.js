@@ -9,6 +9,26 @@ $(function(){
     });
 });
 
+function load_settings() {
+    $.ajax({
+        url: '/get-settings',
+        type: 'GET',
+    }).done(function (data) {
+        console.log(data);
+        $('#lines_count').val(data['line_count']);
+        $('#font_size').val(data['font_size']);
+        if (data["groups"].includes("let_num")) {
+            $('#let_num').attr('checked', true);
+        }
+        if (data["groups"].includes("punctuation")) {
+            $('#punctuation').attr('checked', true);
+        }
+        if (data["groups"].includes("special")) {
+            $('#special').attr('checked', true);
+        }
+    });
+}
+
 var inputError = false;
 $('#imageInput').change(function() {
     var myFile = $(this).prop('files');
@@ -56,8 +76,10 @@ $('#black-btn').click(function() {
             var font = data['font_size'].toString() + 'pt';
             $('#ascii-text').css("font-size", font);
             $('#ascii-text').css("background-color", 'white');
+            load_settings();
         });
         $('#convert-image').removeClass('hide');
+        $('#detail-settings').removeClass('hide');
         $('#black-ch').addClass('text-white bg-primary border-primary');
         $('#black-card').addClass('border-primary');
         $('#black-btn').prop('disabled', true);
@@ -85,14 +107,64 @@ $('#colored-btn').click(function() {
             var font = data['font_size'].toString() + 'pt';
             $('#ascii-text').css("font-size", font);
             $('#ascii-text').css("background-color", 'black');
+            load_settings();
         });
         $('#convert-image').removeClass('hide');
+        $('#detail-settings').removeClass('hide');
         $('#colored-ch').addClass('text-white bg-primary border-primary');
         $('#colored-card').addClass('border-primary');
         $('#colored-btn').prop('disabled', true);
         $('#black-ch').removeClass('text-white bg-primary border-primary');
         $('#black-card').removeClass('border-primary');
         $('#black-btn').prop('disabled', false);
+    });
+});
+
+$('#save-settings').click(function() {
+    var groups_input = Array()
+    if ($('#let_num').is(':checked')) {
+        groups_input.push('let_num');
+    }
+    if ($('#punctuation').is(':checked')) {
+        groups_input.push('punctuation');
+    }
+    if ($('#special').is(':checked')) {
+        groups_input.push('special');
+    }
+    $.ajax({
+        url: '/settings',
+        type: 'POST',
+        contentType: 'application/json',
+        data: JSON.stringify({
+            font_size: $("#font_size").val(),
+            line_count: $("#lines_count").val(),
+            groups: groups_input
+        })
+    }).done(function (data) {
+        $.ajax({
+            url: '/get-ascii',
+            type: 'GET',
+        }).done(function (data) {
+            if (data['color'] === 'coloured') {
+                document.getElementById('ascii-text').innerHTML = "";
+                $('#ascii-text').append(data['ascii']);
+                $('#ascii-text').css("background-color", 'black');
+            } else if (data['color'] === 'black') {
+                $('#ascii-text').text(data['ascii']);
+                $('#ascii-text').css("background-color", 'white');
+            }
+            var font = data['font_size'].toString() + 'pt';
+            $('#ascii-text').css("font-size", font);
+            // load_settings();
+        });
+        // $('#convert-image').removeClass('hide');
+        // $('#detail-settings').removeClass('hide');
+        // $('#colored-ch').addClass('text-white bg-primary border-primary');
+        // $('#colored-card').addClass('border-primary');
+        // $('#colored-btn').prop('disabled', true);
+        // $('#black-ch').removeClass('text-white bg-primary border-primary');
+        // $('#black-card').removeClass('border-primary');
+        // $('#black-btn').prop('disabled', false);
     });
 });
 
