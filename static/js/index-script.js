@@ -199,6 +199,10 @@ $('#registration-btn').click(function() {
     window.location.href = '/registration';
 });
 
+$('#login-btn').click(function() {
+    window.location.href = '/login';
+});
+
 $(document).ready(function() {
     html2canvas(document.querySelector("#ascii-text")).then(canvas => {
         console.log(canvas.toDataURL());

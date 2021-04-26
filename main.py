@@ -1,4 +1,4 @@
-from flask import Flask, flash, request, redirect, render_template, Markup
+from flask import Flask, flash, request, redirect, render_template, Markup, jsonify
 from werkzeug.utils import secure_filename
 from PIL import Image
 import sqlite3
@@ -129,8 +129,69 @@ def upload_form():
     return render_template('index.html')
 
 
+@app.route('/login')
+def login():
+    return render_template('login.html')
+
+
+@app.route('/log-in', methods=['POST'])
+def log_in():
+    global USER, LOGIN
+    if request.method == 'POST':
+        data = request.json
+        login = data['login']
+        con = sqlite3.connect("static/database/Converter.db")
+        cur = con.cursor()
+        result = cur.execute(f"SELECT login, password, email, name, surname FROM users WHERE (login='{login}' OR email='{login}')").fetchall()
+        if result:
+            LOGIN = True
+            USER = {
+                'login': result[0][0],
+                'password': result[0][1],
+                'email': result[0][2],
+                'name': result[0][3],
+                'surname': result[0][4],
+            }
+        login = USER.get('login', 'Не указан')
+        password = USER.get('password', 'Не указан')
+        email = USER.get('email', 'Не указан')
+        name = USER.get('name', 'Не указано')
+        surname = USER.get('surname', 'Не указана')
+        return 'true'
+
+
+@app.route('/get-using', methods=['GET'])
+def get_using():
+    if request.method == 'GET':
+        con = sqlite3.connect("static/database/Converter.db")
+        cur = con.cursor()
+        result = cur.execute(f"SELECT login, email FROM users").fetchall()
+        data = {'login': dict(), 'email': dict()}
+        for log, email in result:
+            data['login'][str(log)] = 1
+            data['email'][str(email)] = 1
+        print(data)
+        return jsonify(data)
+
+
+@app.route('/get_login_password', methods=['GET'])
+def get_login_password():
+    if request.method == 'GET':
+        con = sqlite3.connect("static/database/Converter.db")
+        cur = con.cursor()
+        result = cur.execute(f"SELECT login, email, password FROM users").fetchall()
+        data = dict()
+        for log, email, password in result:
+            data[str(log)] = str(password)
+            data[str(email)] = str(password)
+        print(data)
+        return data
+
+
 @app.route('/profile')
 def profile():
+    if not LOGIN:
+        return render_template('index.html')
     login = USER.get('login', 'Не указан')
     password = USER.get('password', 'Не указан')
     email = USER.get('email', 'Не указан')
@@ -141,6 +202,7 @@ def profile():
 
 @app.route('/log-out', methods=['POST'])
 def log_out():
+    global LOGIN, USER
     if request.method == 'POST':
         LOGIN = False
         USER = {}

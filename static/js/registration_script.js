@@ -1,9 +1,19 @@
+let using
+
 function validValues(id, value) {
-    if (id === 'email') {
+    if (id === 'login') {
+        if (using['login'][value] !== undefined) {
+            return 'login-using-error'
+        } else {
+            return true;
+        }
+    } else if (id === 'email') {
         let patt1 = new RegExp("@");
         let patt2 = new RegExp("[.]");
         if (!(patt1.test(value) && patt2.test(value))) {
             return 'email-error';
+        } else if (using['email'][value] !== undefined) {
+            return 'email-using-error'
         } else {
             return true;
         }
@@ -44,8 +54,16 @@ function validationValue(input) {
         lab.text('');
         fal.css('display', 'none');
         let result = validValues(id, $(input).val());
-        if (result === 'email-error') {
+        if (result === 'login-using-error') {
+            lab.text('Пользователь с таким логином уже существует');
+            fal.css('display', 'block');
+            succes = false
+        } else if (result === 'email-error') {
             lab.text('Введён некорректный email');
+            fal.css('display', 'block');
+            succes = false
+        } else if (result === 'email-using-error') {
+            lab.text('Пользователь с таким email уже существует');
             fal.css('display', 'block');
             succes = false
         } else if (result === 'password-error') {
@@ -85,6 +103,14 @@ function validation($form) {
 }
 
 $(document).ready(function() {
+    $.ajax({
+        url: '/get-using',
+        type: 'GET'
+    }).done(function(data){
+        // console.log(data);
+        using = data;
+        console.log(using);
+    });
     $("input").change(function() {
         validationValue(this);
     });
@@ -112,6 +138,9 @@ $(document).ready(function() {
 
 $('#registration-btn').click(function() {
     window.location.href = '/registration';
+});
+$('#login-btn').click(function() {
+    window.location.href = '/login';
 });
 
 function findFal(id) {

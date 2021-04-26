@@ -8,3 +8,10 @@ $('#log_btn').click(function() {
         window.location.href = '/';
     });
 })
+
+$('#registration-btn').click(function() {
+    window.location.href = '/registration';
+});
+$('#login-btn').click(function() {
+    window.location.href = '/login';
+});
