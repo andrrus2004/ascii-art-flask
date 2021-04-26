@@ -45,6 +45,13 @@ header div {
     color: #ff0000;
 }
 
+i.fa-check{
+    color: green;
+}
+i.fa-times{
+    color: red;
+}
+
 #log_btn {
     font-size: 20px;
     /*height: 55px;*/

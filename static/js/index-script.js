@@ -209,6 +209,34 @@ $('#login-btn').click(function() {
     }
 });
 
+$('#save-template').click(function() {
+    var groups_input = Array()
+    if ($('#let_num').is(':checked')) {
+        groups_input.push('let_num');
+    }
+    if ($('#punctuation').is(':checked')) {
+        groups_input.push('punctuation');
+    }
+    if ($('#special').is(':checked')) {
+        groups_input.push('special');
+    }
+    $.ajax({
+        url: '/new-template',
+        type: 'POST',
+        contentType: 'application/json',
+        data: JSON.stringify({
+            name: $('#template-name').val(),
+            font_size: $("#font_size").val(),
+            line_count: $("#lines_count").val(),
+            auto_size: false,
+            groups: groups_input
+        })
+    }).done(function (data) {
+        $('#back-btn').click();
+        // console.log($('#template-name').val());
+    });
+});
+
 $(document).ready(function() {
     $.ajax({
             url: '/get-login',
@@ -217,11 +245,16 @@ $(document).ready(function() {
             login = data;
             console.log(login)
             if (login !== 'false') {
+                $('#modal-btn').prop('disabled', false);
                 $('#login-btn').html(login);
             } else {
+                $('#modal-btn').prop('disabled', true);
                 $('#login-btn').html('Вход');
             }
         });
+
+    // var myModal = new bootstrap.Modal(document.getElementById('myModal'));
+    // myModal.toggle();
 
 
     html2canvas(document.querySelector("#ascii-text")).then(canvas => {

@@ -12,7 +12,7 @@
           integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6"
           crossorigin="anonymous"
           rel="stylesheet">
-
+<link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
     <!--    Fonts    -->
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100&display=swap" rel="stylesheet">
@@ -66,21 +66,68 @@
         <table class="table table-hover">
             <thead>
                 <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">Дата и время загрузки</th>
-                    <th scope="col">Название</th>
-                    <th scope="col"></th>
-                    <th scope="col"></th>
+                    <th scope="col" class="text-center">#</th>
+                    <th scope="col" class="text-center">Дата и время загрузки</th>
+                    <th scope="col" class="text-center">Название</th>
+                    <th scope="col" class="text-center"></th>
+                    <th scope="col" class="text-center"></th>
                 </tr>
             </thead>
             <tbody>
                 {% for i in images["images"] %}
                 <tr>
-                    <th scope="row">{{i["index"]}}</th>
-                    <td>{{i["date"]}}</td>
-                    <td>{{i["name"]}}</td>
-                    <td><button type="button" class="btn btn-primary btn-sm use-btn" id="use-{{i['index']}}">Использовать</button></td>
-                    <td><button type="button" class="btn btn-danger btn-sm del-btn" id="del-{{i['index']}}">Удалить</button></td>
+                    <th scope="row" class="text-center">{{i["index"]}}</th>
+                    <td class="text-center">{{i["date"]}}</td>
+                    <td class="text-center">{{i["name"]}}</td>
+                    <td class="text-center"><button type="button" class="btn btn-primary btn-sm use-btn" id="use-{{i['index']}}">Конвертировать</button></td>
+                    <td class="text-center"><button type="button" class="btn btn-danger btn-sm del-btn" id="del-{{i['index']}}">Удалить</button></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+    </div>
+        <div class="container">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th scope="col" class="text-center">Название</th>
+                    <th scope="col" class="text-center">Стиль</th>
+                    <th scope="col" class="text-center">Количесвто строк</th>
+                    <th scope="col" class="text-center">Размер символов</th>
+                    <th scope="col" class="text-center">Буквы и цифры</th>
+                    <th scope="col" class="text-center">Знаки препинания</th>
+                    <th scope="col" class="text-center">Специальные символы</th>
+                    <th scope="col" class="text-center"></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for i in templates["templates"] %}
+                <tr>
+                    <th scope="row" class="text-center">{{i["name"]}}</th>
+                    {% if i["color"] == "black" %}
+                        <td>Обычный</td>
+                    {% else %}
+                        <td>Цветной</td>
+                    {% endif %}
+                    <td class="text-center">{{i["line_count"]}}</td>
+                    <td class="text-center">{{i["font_size"]}}</td>
+                    {% if i["let_num"] == "True" %}
+                        <td class="text-center"><i class="fas fa-check"></i></td>
+                    {% else %}
+                        <td class="text-center"><i class="fas fa-times"></i></td>
+                    {% endif %}
+                    {% if i["punctuation"] == "True" %}
+                        <td class="text-center"><i class="fas fa-check"></i></td>
+                    {% else %}
+                        <td class="text-center"><i class="fas fa-times"></i></td>
+                    {% endif %}
+                    {% if i["special"] == "True" %}
+                        <td class="text-center"><i class="fas fa-check"></i></td>
+                    {% else %}
+                        <td class="text-center"><i class="fas fa-times"></i></td>
+                    {% endif %}
+                    <td class="text-center"><button type="button" class="btn btn-danger btn-sm del-temp-btn" id="del-temp-{{i['name']}}">Удалить</button></td>
                 </tr>
                 {% endfor %}
             </tbody>

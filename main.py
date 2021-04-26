@@ -145,7 +145,7 @@ def log_in():
         con = sqlite3.connect("static/database/Converter.db")
         cur = con.cursor()
         result = cur.execute(
-            f"SELECT login, password, email, name, surname, images FROM users WHERE (login='{login}' OR email='{login}')").fetchall()
+            f"SELECT login, password, email, name, surname, images, templates FROM users WHERE (login='{login}' OR email='{login}')").fetchall()
         if result:
             LOGIN = True
             USER = {
@@ -154,7 +154,8 @@ def log_in():
                 'email': result[0][2],
                 'name': result[0][3],
                 'surname': result[0][4],
-                'images': json.loads(result[0][5])
+                'images': json.loads(result[0][5]),
+                'templates': json.loads(result[0][6])
             }
         login = USER.get('login', 'Не указан')
         password = USER.get('password', 'Не указан')
@@ -162,6 +163,7 @@ def log_in():
         name = USER.get('name', 'Не указано')
         surname = USER.get('surname', 'Не указана')
         images = USER.get('surname', 'История пуста')
+        templates = USER.get('surname', 'Шаблонов нет')
         return 'true'
 
 
@@ -211,9 +213,11 @@ def profile():
     name = USER.get('name', 'Не указано')
     surname = USER.get('surname', 'Не указана')
     images = USER.get('images', 'История пуста')
+    templates = USER.get('templates', 'Шаблонов нет')
     images['images'].sort(key=lambda x: -int(x['index']))
+    templates['templates'].sort(key=lambda x: x['name'])
     return render_template('profile.html', login=login, password=password, email=email, name=name, surname=surname,
-                           images=images)
+                           images=images, templates=templates)
 
 
 @app.route('/log-out', methods=['POST'])
@@ -223,6 +227,26 @@ def log_out():
         LOGIN = False
         USER = {}
         return render_template('index.html')
+
+
+@app.route('/del-template-element', methods=['POST'])
+def del_template_element():
+    global LOGIN, USER
+    if request.method == 'POST':
+        data = request.json
+        index = data['id'][9:]
+        print(index)
+        rm = -1
+        for i in range(len(USER['templates']['templates'])):
+            if str(index) == str(USER['templates']['templates'][i]['name']):
+                rm = i
+                break
+        USER['templates']['templates'].pop(rm)
+        con = sqlite3.connect("static/database/Converter.db")
+        cur = con.cursor()
+        cur.execute(f"UPDATE users SET images='{json.dumps(USER['templates'])}' WHERE login='{USER['login']}'")
+        con.commit()
+        return 'true'
 
 
 @app.route('/del-history-element', methods=['POST'])
@@ -241,7 +265,7 @@ def del_history_element():
         cur = con.cursor()
         cur.execute(f"UPDATE users SET images='{json.dumps(USER['images'])}' WHERE login='{USER['login']}'")
         con.commit()
-        return render_template('index.html')
+        return 'true'
 
 
 @app.route('/registration')
@@ -254,10 +278,13 @@ def new_user():
     global USER, LOGIN
     if request.method == 'POST':
         data = request.json
+        images = '{"images": []}'
+
+        templates = '{"templates": []}'
         con = sqlite3.connect("static/database/Converter.db")
         cur = con.cursor()
-        cur.execute(f"INSERT INTO users (login, password, email, name, surname) VALUES "
-                    f"('{data['login']}', '{data['password']}', '{data['email']}', '{data['name']}', '{data['surname']}')")
+        cur.execute(f"INSERT INTO users (login, password, email, name, surname, images, templates) VALUES "
+                    f"('{data['login']}', '{data['password']}', '{data['email']}', '{data['name']}', '{data['surname']}', '{images}', '{templates}')")
         con.commit()
         USER = data
         LOGIN = True
@@ -306,6 +333,42 @@ def upload_file():
     if request.method == 'GET':
         text, font_size = convert(FILENAME)
         return {'ascii': text, 'font_size': font_size, 'color': SETTINGS[COLOR]}
+
+
+@app.route('/new-template', methods=['POST'])
+def new_template():
+    data = request.json
+    template = dict()
+    template['name'] = data['name']
+    if SETTINGS[COLOR] == COLOURED:
+        template['color'] = COLOURED
+    else:
+        template['color'] = BLACK
+    template['line_count'] = data['line_count']
+    template['font_size'] = data['font_size']
+    if 'let_num' in data['groups']:
+        template['let_num'] = 'True'
+    else:
+        template['let_num'] = 'False'
+
+    if 'punctuation' in data['groups']:
+        template['punctuation'] = 'True'
+    else:
+        template['punctuation'] = 'False'
+
+    if 'special' in data['groups']:
+        template['special'] = 'True'
+    else:
+        template['special'] = 'False'
+    print(template)
+    USER['templates']['templates'].append(template)
+
+    con = sqlite3.connect("static/database/Converter.db")
+    cur = con.cursor()
+    cur.execute(f"UPDATE users SET templates='{json.dumps(USER['templates'])}' WHERE login='{USER['login']}'")
+    con.commit()
+
+    return 'True'
 
 
 @app.route('/settings', methods=['POST'])

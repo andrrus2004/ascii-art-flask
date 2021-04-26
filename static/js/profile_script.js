@@ -33,6 +33,20 @@ $('.del-btn').click(function() {
     });
 });
 
+$('.del-temp-btn').click(function() {
+   console.log($(this).attr('id'));
+   $.ajax({
+        url: '/del-template-element',
+        type: 'POST',
+        contentType: 'application/json',
+        data: JSON.stringify({
+            id: $(this).attr('id')
+        })
+    }).done(function(data){
+        window.location.href = '/profile';
+    });
+});
+
 $('#registration-btn').click(function() {
     window.location.href = '/registration';
 });
