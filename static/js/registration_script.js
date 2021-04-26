@@ -1,4 +1,5 @@
-let using
+let using;
+let login;
 
 function validValues(id, value) {
     if (id === 'login') {
@@ -140,7 +141,11 @@ $('#registration-btn').click(function() {
     window.location.href = '/registration';
 });
 $('#login-btn').click(function() {
-    window.location.href = '/login';
+    if (login !== 'false') {
+        window.location.href = '/profile';
+    } else {
+        window.location.href = '/login';
+    }
 });
 
 function findFal(id) {
@@ -152,3 +157,18 @@ function findErrorLab(id) {
     const arr = Array.from(document.querySelectorAll('.text-error p'));
     return arr.filter(element => element.dataset.for === id)[0];
 }
+
+$(document).ready(function() {
+    $.ajax({
+            url: '/get-login',
+            type: 'GET',
+        }).done(function (data) {
+            login = data;
+            console.log(login)
+            if (login !== 'false') {
+                $('#login-btn').html(login);
+            } else {
+                $('#login-btn').html('Вход');
+            }
+        });
+});

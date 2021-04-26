@@ -39,30 +39,7 @@
   <div class="container d-flex justify-content-center">
     <div>
       <h1 class="text-center">Личный кабинет</h1>
-      <form class="reg_inputs" autocomplete="off">
-<!--        {% for i in arr %}-->
-<!--        <div class="row form-group mt-4">-->
-<!--          <div class="col-4 d-flex align-items-center">Ваш логин</div>-->
-<!--          <div class="col-4 d-flex align-items-center">{{ i[0] }}</div>-->
-<!--        </div>-->
-<!--        <div class="row form-group mt-4">-->
-<!--          <div class="col-4 d-flex align-items-center">Ваш пароль</div>-->
-<!--          <div class="col-4 d-flex align-items-center">{{ i[1] }}</div>-->
-<!--        </div>-->
-<!--        <div class="row form-group mt-4">-->
-<!--          <div class="col-4 d-flex align-items-center">Ваш email</div>-->
-<!--          <div class="col-4 d-flex align-items-center">{{ i[2] }}</div>-->
-<!--        </div>-->
-<!--        <div class="row form-group mt-4">-->
-<!--          <div class="col-4 d-flex align-items-center">Ваше имя</div>-->
-<!--          <div class="col-4 d-flex align-items-center">{{ i[3] }}</div>-->
-<!--        </div>-->
-<!--        <div class="row form-group mt-4">-->
-<!--          <div class="col-4 d-flex align-items-center">Ваша фамилия</div>-->
-<!--          <div class="col-4 d-flex align-items-center">{{ i[4] }}</div>-->
-<!--        </div>-->
-<!--        {% endfor %}-->
-
+        <div class="container reg_inputs">
         <div class="row form-group mt-4">
           <div class="col-6 category">Ваш логин</div>
           <div class="col-6 data">{{login}}</div>
@@ -83,13 +60,38 @@
           <div class="col-6 category">Ваша фамилия</div>
           <div class="col-6 data">{{surname}}</div>
         </div>
+
+    </div>
+        <div class="container">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Дата и время загрузки</th>
+                    <th scope="col">Название</th>
+                    <th scope="col"></th>
+                    <th scope="col"></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for i in images["images"] %}
+                <tr>
+                    <th scope="row">{{i["index"]}}</th>
+                    <td>{{i["date"]}}</td>
+                    <td>{{i["name"]}}</td>
+                    <td><button type="button" class="btn btn-primary btn-sm use-btn" id="use-{{i['index']}}">Использовать</button></td>
+                    <td><button type="button" class="btn btn-danger btn-sm del-btn" id="del-{{i['index']}}">Удалить</button></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+    </div>
         <div class="buttons">
           <button type="button" class="btn btn-primary btn-lg" id="log_btn">Выйти из аккаунта</button>
         </div>
-<!--        </div>-->
-
-      </form>
     </div>
+
   </div>
 
     <!-- Optional JavaScript; choose one of the two! -->

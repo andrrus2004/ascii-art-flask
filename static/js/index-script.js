@@ -1,3 +1,5 @@
+let login;
+
 $(function(){
     $(".twentytwenty-container").twentytwenty({
         // default_offset_pct: 0.5, // How much of the before image is visible when the page loads
@@ -200,10 +202,28 @@ $('#registration-btn').click(function() {
 });
 
 $('#login-btn').click(function() {
-    window.location.href = '/login';
+    if (login !== 'false') {
+        window.location.href = '/profile';
+    } else {
+        window.location.href = '/login';
+    }
 });
 
 $(document).ready(function() {
+    $.ajax({
+            url: '/get-login',
+            type: 'GET',
+        }).done(function (data) {
+            login = data;
+            console.log(login)
+            if (login !== 'false') {
+                $('#login-btn').html(login);
+            } else {
+                $('#login-btn').html('Вход');
+            }
+        });
+
+
     html2canvas(document.querySelector("#ascii-text")).then(canvas => {
         console.log(canvas.toDataURL());
     });

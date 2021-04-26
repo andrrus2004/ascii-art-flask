@@ -1,7 +1,9 @@
 from flask import Flask, flash, request, redirect, render_template, Markup, jsonify
 from werkzeug.utils import secure_filename
 from PIL import Image
+import datetime as dt
 import sqlite3
+import json
 import os
 
 FONT_SIZE_LIST = [(1, 3), (2, 3), (2, 4), (3, 6), (4, 8), (5, 8), (5, 12), (7, 14), (7, 15), (8, 16),
@@ -142,7 +144,8 @@ def log_in():
         login = data['login']
         con = sqlite3.connect("static/database/Converter.db")
         cur = con.cursor()
-        result = cur.execute(f"SELECT login, password, email, name, surname FROM users WHERE (login='{login}' OR email='{login}')").fetchall()
+        result = cur.execute(
+            f"SELECT login, password, email, name, surname, images FROM users WHERE (login='{login}' OR email='{login}')").fetchall()
         if result:
             LOGIN = True
             USER = {
@@ -151,13 +154,23 @@ def log_in():
                 'email': result[0][2],
                 'name': result[0][3],
                 'surname': result[0][4],
+                'images': json.loads(result[0][5])
             }
         login = USER.get('login', 'Не указан')
         password = USER.get('password', 'Не указан')
         email = USER.get('email', 'Не указан')
         name = USER.get('name', 'Не указано')
         surname = USER.get('surname', 'Не указана')
+        images = USER.get('surname', 'История пуста')
         return 'true'
+
+
+@app.route('/get-login', methods=['GET'])
+def get_login():
+    if request.method == 'GET':
+        if LOGIN:
+            return USER['login']
+        return 'false'
 
 
 @app.route('/get-using', methods=['GET'])
@@ -197,7 +210,10 @@ def profile():
     email = USER.get('email', 'Не указан')
     name = USER.get('name', 'Не указано')
     surname = USER.get('surname', 'Не указана')
-    return render_template('profile.html', login=login, password=password, email=email, name=name, surname=surname)
+    images = USER.get('images', 'История пуста')
+    images['images'].sort(key=lambda x: -int(x['index']))
+    return render_template('profile.html', login=login, password=password, email=email, name=name, surname=surname,
+                           images=images)
 
 
 @app.route('/log-out', methods=['POST'])
@@ -206,6 +222,25 @@ def log_out():
     if request.method == 'POST':
         LOGIN = False
         USER = {}
+        return render_template('index.html')
+
+
+@app.route('/del-history-element', methods=['POST'])
+def del_history_element():
+    global LOGIN, USER
+    if request.method == 'POST':
+        data = request.json
+        index = data['id'][4:]
+        rm = -1
+        for i in range(len(USER['images']['images'])):
+            if str(index) == str(USER['images']['images'][i]['index']):
+                rm = i
+                break
+        USER['images']['images'].pop(rm)
+        con = sqlite3.connect("static/database/Converter.db")
+        cur = con.cursor()
+        cur.execute(f"UPDATE users SET images='{json.dumps(USER['images'])}' WHERE login='{USER['login']}'")
+        con.commit()
         return render_template('index.html')
 
 
@@ -231,7 +266,7 @@ def new_user():
 
 @app.route('/load-image', methods=['POST'])
 def load_image():
-    global FILENAME
+    global FILENAME, USER
     if request.method == 'POST':
         if 'img-file' not in request.files:
             flash('No file part')
@@ -241,6 +276,21 @@ def load_image():
         FILENAME = file.filename
         print(FILENAME)
         file.save(os.path.join(app.config['UPLOAD_FOLDER'], FILENAME))
+        if LOGIN:
+            history = dict()
+            history['index'] = str(len(USER['images']['images']) + 1)
+            date = dt.datetime.now().date()
+            time = dt.datetime.now().time()
+            history['date'] = f'{str(date.day).rjust(2, "0")}.{str(date.month).rjust(2, "0")}.{date.year} ' \
+                              f'{str(time.hour).rjust(2, "0")}:{str(time.minute).rjust(2, "0")}:{str(time.second).rjust(2, "0")}'
+            history['name'] = FILENAME
+            USER['images']['images'].append(history)
+            print(json.dumps(USER['images']))
+
+            con = sqlite3.connect("static/database/Converter.db")
+            cur = con.cursor()
+            cur.execute(f"UPDATE users SET images='{json.dumps(USER['images'])}' WHERE login='{USER['login']}'")
+            con.commit()
         return 'True'
         # return render_template('index.html', imageLoad='loaded')
 

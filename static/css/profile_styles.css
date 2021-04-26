@@ -60,6 +60,12 @@ header div {
     text-align: left;
 }
 
+tbody button {
+    /*font-size: 15px;*/
+    font-weight: bold;
+    width: 150px;
+}
+
 .buttons{
     width: 220px;
     margin: 20px auto 20px auto;
