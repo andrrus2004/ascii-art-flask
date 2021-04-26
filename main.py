@@ -128,7 +128,11 @@ app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 @app.route('/')
 def upload_form():
-    return render_template('index.html')
+    data = []
+    if LOGIN:
+        for el in USER['templates']['templates']:
+            data.append(el['name'])
+    return render_template('index.html', templates=data)
 
 
 @app.route('/login')
@@ -206,7 +210,9 @@ def get_login_password():
 @app.route('/profile')
 def profile():
     if not LOGIN:
-        return render_template('index.html')
+        data = []
+        return render_template('index.html', templates=data)
+    print(USER)
     login = USER.get('login', 'Не указан')
     password = USER.get('password', 'Не указан')
     email = USER.get('email', 'Не указан')
@@ -214,8 +220,11 @@ def profile():
     surname = USER.get('surname', 'Не указана')
     images = USER.get('images', 'История пуста')
     templates = USER.get('templates', 'Шаблонов нет')
-    images['images'].sort(key=lambda x: -int(x['index']))
-    templates['templates'].sort(key=lambda x: x['name'])
+    print(images['images'])
+    if images['images']:
+        images['images'].sort(key=lambda x: -int(x['index']))
+    if templates['templates']:
+        templates['templates'].sort(key=lambda x: x['name'])
     return render_template('profile.html', login=login, password=password, email=email, name=name, surname=surname,
                            images=images, templates=templates)
 
@@ -226,7 +235,8 @@ def log_out():
     if request.method == 'POST':
         LOGIN = False
         USER = {}
-        return render_template('index.html')
+        data = []
+        return render_template('index.html', templates=data)
 
 
 @app.route('/del-template-element', methods=['POST'])
@@ -279,15 +289,40 @@ def new_user():
     if request.method == 'POST':
         data = request.json
         images = '{"images": []}'
-
         templates = '{"templates": []}'
+        if not data['name']:
+            data['name'] = 'Не указано'
+        if not data['surname']:
+            data['surname'] = 'Не указана'
         con = sqlite3.connect("static/database/Converter.db")
         cur = con.cursor()
         cur.execute(f"INSERT INTO users (login, password, email, name, surname, images, templates) VALUES "
                     f"('{data['login']}', '{data['password']}', '{data['email']}', '{data['name']}', '{data['surname']}', '{images}', '{templates}')")
         con.commit()
         USER = data
+        USER['images'] = json.loads(images)
+        USER['templates'] = json.loads(templates)
         LOGIN = True
+        return 'true'
+
+
+@app.route('/load-template', methods=['POST'])
+def load_template():
+    global FILENAME, USER, SETTINGS
+    if request.method == 'POST':
+        name = request.json['name']
+        temps = USER.get('templates', {'templates': []})['templates']
+        for el in temps:
+            if el['name'] == name:
+                for key, value in el.items():
+                    if key in SETTINGS:
+                        if key == FONT_SIZE or key == LINE_COUNT:
+                            SETTINGS[key] = int(value)
+                        elif key == AUTO_SIZE:
+                            SETTINGS[key] = bool(value)
+                        else:
+                            SETTINGS[key] = value
+                break
         return 'true'
 
 
@@ -297,7 +332,11 @@ def load_image():
     if request.method == 'POST':
         if 'img-file' not in request.files:
             flash('No file part')
-            return render_template('index.html')
+            data = []
+            if LOGIN:
+                for el in USER['templates']['templates']:
+                    data.append(el['name'])
+            return render_template('index.html', templates=data)
         file = request.files['img-file']
         # filename = secure_filename(file.filename)
         FILENAME = file.filename

@@ -159,6 +159,7 @@ $("#settings-form").submit(function() {
             var font = data['font_size'].toString() + 'pt';
             console.log(font);
             $('#ascii-text').css("font-size", font);
+            $(window).scrollTop(0);
             // load_settings();
         });
         // $('#convert-image').removeClass('hide');
@@ -237,6 +238,32 @@ $('#save-template').click(function() {
     });
 });
 
+$('#img-save').click(function() {
+    $(window).scrollTop(0);
+    html2canvas(document.querySelector("#ascii-text")).then(canvas => {
+        console.log();
+        var download = document.getElementById('download');
+        download.href = canvas.toDataURL();
+        download.download='ascii-image.png';
+        download.click()
+    });
+});
+
+$('.dropdown-item').click(function() {
+    console.log($(this).text())
+    $.ajax({
+            url: '/load-template',
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify({
+                name: $(this).text()
+            })
+        }).done(function (data) {
+            load_settings();
+            $("#settings-form").submit();
+        });
+});
+
 $(document).ready(function() {
     $.ajax({
             url: '/get-login',
@@ -246,18 +273,14 @@ $(document).ready(function() {
             console.log(login)
             if (login !== 'false') {
                 $('#modal-btn').prop('disabled', false);
+                $('#select-btn').prop('disabled', false);
                 $('#login-btn').html(login);
             } else {
                 $('#modal-btn').prop('disabled', true);
+                $('#select-btn').prop('disabled', true);
                 $('#login-btn').html('Вход');
             }
         });
-
     // var myModal = new bootstrap.Modal(document.getElementById('myModal'));
     // myModal.toggle();
-
-
-    html2canvas(document.querySelector("#ascii-text")).then(canvas => {
-        console.log(canvas.toDataURL());
-    });
 });

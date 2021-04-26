@@ -28,8 +28,8 @@
         <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
             <li><a href="/" class="nav-link px-2 link-secondary">ASCII Art Converter</a></li>
             <li><a href="#" class="nav-link px-2 link-dark">Конвертировать</a></li>
-            <li><a href="#" class="nav-link px-2 link-dark">Примеры</a></li>
-            <li><a href="#" class="nav-link px-2 link-dark">Поддержка</a></li>
+<!--            <li><a href="#" class="nav-link px-2 link-dark">Примеры</a></li>-->
+<!--            <li><a href="#" class="nav-link px-2 link-dark">Поддержка</a></li>-->
         </ul>
         <div class="col-md-3 text-end">
             <button type="button" class="btn btn-outline-primary me-2" id="login-btn">Вход</button>
@@ -63,13 +63,14 @@
 
     </div>
         <div class="container">
+            <h1>История конвертаций</h1>
         <table class="table table-hover">
             <thead>
                 <tr>
                     <th scope="col" class="text-center">#</th>
                     <th scope="col" class="text-center">Дата и время загрузки</th>
                     <th scope="col" class="text-center">Название</th>
-                    <th scope="col" class="text-center"></th>
+<!--                    <th scope="col" class="text-center"></th>-->
                     <th scope="col" class="text-center"></th>
                 </tr>
             </thead>
@@ -79,7 +80,7 @@
                     <th scope="row" class="text-center">{{i["index"]}}</th>
                     <td class="text-center">{{i["date"]}}</td>
                     <td class="text-center">{{i["name"]}}</td>
-                    <td class="text-center"><button type="button" class="btn btn-primary btn-sm use-btn" id="use-{{i['index']}}">Конвертировать</button></td>
+<!--                    <td class="text-center"><button type="button" class="btn btn-primary btn-sm use-btn" id="use-{{i['index']}}">Конвертировать</button></td>-->
                     <td class="text-center"><button type="button" class="btn btn-danger btn-sm del-btn" id="del-{{i['index']}}">Удалить</button></td>
                 </tr>
                 {% endfor %}
@@ -88,6 +89,7 @@
 
     </div>
         <div class="container">
+            <h1>История конвертаций</h1>
         <table class="table table-hover">
             <thead>
                 <tr>

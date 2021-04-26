@@ -23,8 +23,8 @@
         <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
             <li><a href="/" class="nav-link px-2 link-secondary">ASCII Art Converter</a></li>
             <li><a href="#" class="nav-link px-2 link-dark">Конвертировать</a></li>
-            <li><a href="#" class="nav-link px-2 link-dark">Примеры</a></li>
-            <li><a href="#" class="nav-link px-2 link-dark">Поддержка</a></li>
+<!--            <li><a href="#" class="nav-link px-2 link-dark">Примеры</a></li>-->
+<!--            <li><a href="#" class="nav-link px-2 link-dark">Поддержка</a></li>-->
         </ul>
         <div class="col-md-3 text-end">
             <button type="button" class="btn btn-outline-primary me-2" id="login-btn">Вход</button>
@@ -51,10 +51,22 @@
         <div contenteditable="true" class="form-control" id="ascii-text" style="font-size: {{font}}pt;">{{ascii}}</div>
 <!--        <textarea class="form-control" id="ascii-text" style="font-size: 9pt;"></textarea>-->
     </div>
-
     <div class="container detail-settings hide" id="detail-settings">
         <div class="row row-cols-1 mb-3 justify-content-md-center">
             <form class="col-6" id="settings-form">
+                <a class="hide" id="download">Save Canvas Image</a>
+                <div class="container mt-3 mb-3"><button class="btn btn-lg btn-success w-100" id="img-save">Сохранить в виде изображения</button></div>
+                <!-- Example single danger button -->
+<div class="btn-group w-100">
+  <button class="btn btn-lg btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" id="select-btn">
+    Выбрать шаблон параметров
+  </button>
+  <ul class="dropdown-menu">
+      {% for i in templates %}
+        <li><a class="dropdown-item" href="#">{{i}}</a></li>
+      {% endfor %}
+  </ul>
+</div>
                 <div class="mb-3">
                     <label for="lines_count" class="form-label">Количесвто строк</label>
                     <input type="number" class="form-control" id="lines_count" aria-describedby="emailHelp" min="1" max="300">
@@ -118,7 +130,7 @@
         </div>
     </div>
 
-    <div class="container hide color-settings">
+    <div class="container hide color-settings mt-3">
         <div class="row row-cols-1 mb-3 text-center justify-content-md-center">
             <div class="col-4">
                 <div class="card mb-4 rounded-3 shadow-sm" id="black-card">
@@ -158,22 +170,22 @@
 
 
 
-    <div style="height: 1000px" ></div>
+<!--    <div style="height: 1000px" ></div>-->
 
-    <div class="row g-0">
-        <div class="col-6">
-            <div id="container1" class="twentytwenty-container">
-                <img  src="../static/img/askii11.png" />
-                <img  src="../static/img/askii21.png" />
-            </div>
-        </div>
-        <div class="col-6">
-            <div id="container2" class="twentytwenty-container">
-                <img  src="../static/img/car-test.jpg" />
-                <img  src="../static/img/car3.png" />
-            </div>
-        </div>
-    </div>
+<!--    <div class="row g-0">-->
+<!--        <div class="col-6">-->
+<!--            <div id="container1" class="twentytwenty-container">-->
+<!--                <img  src="../static/img/askii11.png" />-->
+<!--                <img  src="../static/img/askii21.png" />-->
+<!--            </div>-->
+<!--        </div>-->
+<!--        <div class="col-6">-->
+<!--            <div id="container2" class="twentytwenty-container">-->
+<!--                <img  src="../static/img/car-test.jpg" />-->
+<!--                <img  src="../static/img/car3.png" />-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
 <!--    <div class="convert">-->
 <!--        button-->
 <!--    </div>-->
