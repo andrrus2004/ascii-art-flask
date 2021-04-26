@@ -44,12 +44,7 @@
 
     <!--    Converting    -->
     <div class=" text-center hide convert" id="convert-image">
-<!--        <img src="../static/uploads/{{imageName}}"/>-->
-<!--        <textarea class="form-control" id="ascii-text" style="font-size: {{font}}pt; width: {{width}}px; height: {{height}}px;"></textarea>  , width=size[0], height=size[1]-->
-<!--            <textarea class="form-control" id="ascii-text" style="font-size: {{font}}pt; font-family: 'Courier New', serif; width: 1128px; height: 914px; margin: 15px auto;"></textarea>-->
-<!--        <textarea class="form-control" id="ascii-text" style="font-size: {{font}}pt; font-family: 'Courier New', serif; margin: 15px auto; overflow-y: hidden !important;"></textarea>-->
         <div contenteditable="true" class="form-control" id="ascii-text" style="font-size: {{font}}pt;">{{ascii}}</div>
-<!--        <textarea class="form-control" id="ascii-text" style="font-size: 9pt;"></textarea>-->
     </div>
     <div class="container detail-settings hide" id="detail-settings">
         <div class="row row-cols-1 mb-3 justify-content-md-center">
@@ -57,16 +52,16 @@
                 <a class="hide" id="download">Save Canvas Image</a>
                 <div class="container mt-3 mb-3"><button class="btn btn-lg btn-success w-100" id="img-save">Сохранить в виде изображения</button></div>
                 <!-- Example single danger button -->
-<div class="btn-group w-100">
-  <button class="btn btn-lg btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" id="select-btn">
-    Выбрать шаблон параметров
-  </button>
-  <ul class="dropdown-menu">
-      {% for i in templates %}
-        <li><a class="dropdown-item" href="#">{{i}}</a></li>
-      {% endfor %}
-  </ul>
-</div>
+                <div class="btn-group w-100">
+                  <button class="btn btn-lg btn-primary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" id="select-btn">
+                    Выбрать шаблон параметров
+                  </button>
+                  <ul class="dropdown-menu">
+                      {% for i in templates %}
+                        <li><a class="dropdown-item" href="#">{{i}}</a></li>
+                      {% endfor %}
+                  </ul>
+                </div>
                 <div class="mb-3">
                     <label for="lines_count" class="form-label">Количесвто строк</label>
                     <input type="number" class="form-control" id="lines_count" aria-describedby="emailHelp" min="1" max="300">
@@ -77,13 +72,6 @@
                     <input type="number" class="form-control" id="font_size" min="1" max="30">
                     <div id="fontSizeHelp" class="form-text">Рахмер символов конвертированного изображения</div>
                 </div>
-<!--                <div class="mb-3 form-check">-->
-<!--                    <input type="checkbox" class="form-check-input" id="exampleCheck1">-->
-<!--                    <label class="form-check-label" for="exampleCheck1">Check me out</label>-->
-<!--                </div>-->
-                <label for="font-size" class="form-label">Используемые символы<br/></label>
-                <div class="mb-3 justify-content-md-center">
-<!--                    <label for="font-size" class="form-label">Используемые символы<br/></label>-->
                     <div class="form-check form-check-inline">
                             <input class="form-check-input" type="checkbox" id="let_num" value="option1">
                             <label class="form-check-label" for="let_num">Буквы и цифры</label>
@@ -154,17 +142,6 @@
                     </div>
                 </div>
             </div>
-<!--            <div class="col-4">-->
-<!--                <div class="card mb-4 rounded-3 shadow-sm border-primary">-->
-<!--                    <div class="card-header py-3 text-white bg-primary border-primary">-->
-<!--                        <h4 class="my-0 fw-normal">Цветной</h4>-->
-<!--                    </div>-->
-<!--                    <div class="card-body">-->
-<!--                        <img class='rounded' src="../static/img/colored.png">-->
-<!--                        <button type="button" class="w-100 btn btn-lg btn-primary" disabled>Выбрать</button>-->
-<!--                    </div>-->
-<!--                </div>-->
-<!--            </div>-->
         </div>
     </div>
 
