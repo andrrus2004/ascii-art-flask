@@ -96,7 +96,7 @@ def img_to_ascii(image, settings={}):
 
 
 def convert(filename):
-    image = Image.open(f'static/uploads/{filename}')
+    image = Image.open(f'{path}/static/uploads/{filename}')
     width, height = image.size
     h = height // 50
     sort_font_size_list = sorted(FONT_SIZE_LIST, key=lambda x: abs(h - x[1]))
@@ -111,7 +111,7 @@ app = Flask(__name__)
 app.secret_key = "secret key"
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
 
-path = os.getcwd()
+path = os.path.dirname(os.path.abspath(__file__))
 UPLOAD_FOLDER = os.path.join(path, 'static/uploads')
 if not os.path.isdir(UPLOAD_FOLDER):
     os.mkdir(UPLOAD_FOLDER)
