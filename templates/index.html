@@ -19,11 +19,11 @@
     <script src="../static/js/html2canvas.min.js"></script>
 </head>
 <body>
-    <header class="sticky-top d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom">
+    <header class="sticky-top d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom" id="top">
         <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
-            <li><a href="/" class="nav-link px-2 link-secondary">ASCII Art Converter</a></li>
-            <li><a href="#" class="nav-link px-2 link-dark">Конвертировать</a></li>
-<!--            <li><a href="#" class="nav-link px-2 link-dark">Примеры</a></li>-->
+            <li><a href="#" class="nav-link px-2 link-secondary to-top">ASCII Art Converter</a></li>
+            <li><a href="#" class="nav-link px-2 link-dark to-top">Конвертировать</a></li>
+            <li><a href="#examples" class="nav-link px-2 link-dark">Примеры</a></li>
 <!--            <li><a href="#" class="nav-link px-2 link-dark">Поддержка</a></li>-->
         </ul>
         <div class="col-md-3 text-end">
@@ -84,13 +84,12 @@
                         <input class="form-check-input" type="checkbox" id="special" value="option3">
                         <label class="form-check-label" for="special">Специальные символы</label>
                     </div>
-                </div>
-                <div class="row text-center">
+                <div class="row text-center mt-1 mb-2">
                     <div class="col">
-                        <button class="btn btn-lg btn-primary w-100" id="save-settings">Применить</button>
+                        <button type="submit" class="btn btn-lg btn-primary w-100 mt-1 mb-2" id="save-settings">Применить</button>
                     </div>
                     <div class="col">
-                        <button type="button" class="btn btn-lg btn-primary w-100" data-bs-toggle="modal" data-bs-target="#exampleModal" id="modal-btn">Сохранить в шаблон</button>
+                        <button type="button" class="btn btn-lg btn-primary w-100 mt-1 mb-2" data-bs-toggle="modal" data-bs-target="#exampleModal" id="modal-btn">Сохранить в шаблон</button>
                     </div>
                 </div>
             </form>
@@ -148,21 +147,23 @@
 
 
 <!--    <div style="height: 1000px" ></div>-->
-
-<!--    <div class="row g-0">-->
-<!--        <div class="col-6">-->
-<!--            <div id="container1" class="twentytwenty-container">-->
-<!--                <img  src="../static/img/askii11.png" />-->
-<!--                <img  src="../static/img/askii21.png" />-->
-<!--            </div>-->
-<!--        </div>-->
-<!--        <div class="col-6">-->
-<!--            <div id="container2" class="twentytwenty-container">-->
-<!--                <img  src="../static/img/car-test.jpg" />-->
-<!--                <img  src="../static/img/car3.png" />-->
-<!--            </div>-->
-<!--        </div>-->
-<!--    </div>-->
+    <h1 class="mt-4">Примеры</h1>
+    <div class="container mb-4">
+        <div class="row g-0" id="examples">
+            <div class="col-6">
+                <div id="container1" class="twentytwenty-container">
+                    <img  src="../static/img/askii11.png" />
+                    <img  src="../static/img/askii21.png" />
+                </div>
+            </div>
+            <div class="col-6">
+                <div id="container2" class="twentytwenty-container">
+                    <img  src="../static/img/car-test.jpg" />
+                    <img  src="../static/img/car3.png" />
+                </div>
+            </div>
+        </div>
+    </div>
 <!--    <div class="convert">-->
 <!--        button-->
 <!--    </div>-->

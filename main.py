@@ -312,12 +312,15 @@ def load_template():
     if request.method == 'POST':
         name = request.json['name']
         temps = USER.get('templates', {'templates': []})['templates']
+        SETTINGS[GROUPS] = []
         for el in temps:
             if el['name'] == name:
                 for key, value in el.items():
-                    if key in SETTINGS:
+                    if key in SETTINGS or key in ['let_num', 'punctuation', 'special']:
                         if key == FONT_SIZE or key == LINE_COUNT:
                             SETTINGS[key] = int(value)
+                        elif key in ['let_num', 'punctuation', 'special']:
+                            SETTINGS[GROUPS].append(key)
                         elif key == AUTO_SIZE:
                             SETTINGS[key] = bool(value)
                         else:

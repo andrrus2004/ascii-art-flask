@@ -21,12 +21,18 @@ function load_settings() {
         $('#font_size').val(data['font_size']);
         if (data["groups"].includes("let_num")) {
             $('#let_num').attr('checked', true);
+        } else {
+            $('#let_num').attr('checked', false);
         }
         if (data["groups"].includes("punctuation")) {
             $('#punctuation').attr('checked', true);
+        } else {
+            $('#punctuation').attr('checked', false);
         }
         if (data["groups"].includes("special")) {
             $('#special').attr('checked', true);
+        } else {
+            $('#special').attr('checked', false);
         }
     });
 }
@@ -88,6 +94,7 @@ $('#black-btn').click(function() {
         $('#colored-ch').removeClass('text-white bg-primary border-primary');
         $('#colored-card').removeClass('border-primary');
         $('#colored-btn').prop('disabled', false);
+        $(window).scrollTop(0);
     });
 });
 
@@ -119,6 +126,7 @@ $('#colored-btn').click(function() {
         $('#black-ch').removeClass('text-white bg-primary border-primary');
         $('#black-card').removeClass('border-primary');
         $('#black-btn').prop('disabled', false);
+        $(window).scrollTop(0);
     });
 });
 
@@ -260,8 +268,28 @@ $('.dropdown-item').click(function() {
             })
         }).done(function (data) {
             load_settings();
-            $("#settings-form").submit();
+            $.ajax({
+            url: '/get-ascii',
+            type: 'GET',
+        }).done(function (data) {
+            if (data['color'] === 'coloured') {
+                document.getElementById('ascii-text').innerHTML = "";
+                $('#ascii-text').append(data['ascii']);
+                $('#ascii-text').css("background-color", 'black');
+            } else if (data['color'] === 'black') {
+                $('#ascii-text').text(data['ascii']);
+                $('#ascii-text').css("background-color", 'white');
+            }
+            var font = data['font_size'].toString() + 'pt';
+            console.log(font);
+            $('#ascii-text').css("font-size", font);
+            $(window).scrollTop(0);
         });
+    });
+});
+
+$('.to-top').click(function() {
+    $(window).scrollTop(0);
 });
 
 $(document).ready(function() {
