@@ -98,7 +98,6 @@ function validation($form) {
         if (result === false) {
             succes = result;
         }
-        console.log(succes)
     });
     return succes;
 }
@@ -108,15 +107,12 @@ $(document).ready(function() {
         url: '/get-using',
         type: 'GET'
     }).done(function(data){
-        // console.log(data);
         using = data;
-        console.log(using);
     });
     $("input").change(function() {
         validationValue(this);
     });
     $('#reg_btn').on('click', function() {
-        console.log(validation())
         if (validation()) {
             $.ajax({
                 url: '/new-user',
@@ -131,7 +127,6 @@ $(document).ready(function() {
                 })
             }).done(function(data){
                 window.location.href = '/profile';
-                // $('#answer1').html(data);
             });
         }
     });
@@ -164,7 +159,6 @@ $(document).ready(function() {
             type: 'GET',
         }).done(function (data) {
             login = data;
-            console.log(login)
             if (login !== 'false') {
                 $('#login-btn').html(login);
             } else {

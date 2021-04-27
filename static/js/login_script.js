@@ -92,7 +92,6 @@ $(document).ready(function() {
         login_email_password = data;
     });
     $('#log_btn').on('click', function() {
-        console.log(validation());
         if (validation()) {
             $.post({
                 url: '/log-in',

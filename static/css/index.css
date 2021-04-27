@@ -38,21 +38,12 @@ header div {
     margin-bottom: 15px;
 }
 
-/*.color-settings {*/
-/*    margin-bottom: 10px;*/
-/*}*/
-
 #ascii-text {
     font-family: "Courier New", serif !important;
     margin: 15px auto;
-    /*text-align: center;*/
     white-space: pre;
-    /*width: 1000px;*/
     width: fit-content;
     overflow-y: hidden;
-    /*width: 1128px;*/
-    /*height: 914px;*/
-    /*background-color: black;*/
 }
 
 .detail-settings {

@@ -9,18 +9,7 @@ $('#log_btn').click(function() {
     });
 })
 
-$('.use-btn').click(function() {
-   console.log($(this).attr('id'));
-   // $.ajax({
-   //      url: '/log-out',
-   //      type: 'POST',
-   //  }).done(function(data){
-   //      window.location.href = '/';
-   //  });
-});
-
 $('.del-btn').click(function() {
-   console.log($(this).attr('id'));
    $.ajax({
         url: '/del-history-element',
         type: 'POST',
@@ -34,7 +23,6 @@ $('.del-btn').click(function() {
 });
 
 $('.del-temp-btn').click(function() {
-   console.log($(this).attr('id'));
    $.ajax({
         url: '/del-template-element',
         type: 'POST',
@@ -64,7 +52,6 @@ $(document).ready(function() {
             type: 'GET',
         }).done(function (data) {
             login = data;
-            console.log(login)
             if (login !== 'false') {
                 $('#login-btn').html(login);
             } else {

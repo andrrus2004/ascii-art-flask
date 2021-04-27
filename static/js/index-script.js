@@ -17,7 +17,6 @@ function load_settings() {
         url: '/get-settings',
         type: 'GET',
     }).done(function (data) {
-        console.log(data);
         $('#lines_count').val(data['line_count']);
         $('#font_size').val(data['font_size']);
         if (data["groups"].includes("let_num")) {
@@ -49,8 +48,6 @@ $('#imageInput').change(function() {
         $('.files').removeClass('error');
         inputError = false;
         }
-        console.log('Всё ок!');
-        console.log(myFile)
         var formData = new FormData();
         formData.append('img-file', $("#imageInput")[0].files[0]);
         $.ajax({
@@ -60,9 +57,7 @@ $('#imageInput').change(function() {
 			processData: false,
 			dataType : 'json',
             data: formData
-        }).done(function (data) {
-            console.log(data);
-        });
+        }).done(function (data) {});
         $('.color-settings').removeClass('hide');
         $('#load-image').addClass('hide');
     }
@@ -166,19 +161,9 @@ $("#settings-form").submit(function() {
                 $('#ascii-text').css("background-color", 'white');
             }
             var font = data['font_size'].toString() + 'pt';
-            console.log(font);
             $('#ascii-text').css("font-size", font);
             $(window).scrollTop(0);
-            // load_settings();
         });
-        // $('#convert-image').removeClass('hide');
-        // $('#detail-settings').removeClass('hide');
-        // $('#colored-ch').addClass('text-white bg-primary border-primary');
-        // $('#colored-card').addClass('border-primary');
-        // $('#colored-btn').prop('disabled', true);
-        // $('#black-ch').removeClass('text-white bg-primary border-primary');
-        // $('#black-card').removeClass('border-primary');
-        // $('#black-btn').prop('disabled', false);
     });
     return false;
 });
@@ -231,11 +216,7 @@ $('#save-template').click(function() {
             type: 'GET',
         }).done(function (data) {
             names = Array(data);
-            console.log(names)
             val = $('#temp-name').val();
-            console.log(names)
-            console.log(val === names[1]);
-            console.log(names.includes(val))
             if (val === '') {
                 $('#temp-name-error').text('Введите название нового шаблона');
                 return false;
@@ -268,7 +249,6 @@ $('#save-template').click(function() {
             })
         }).done(function (data) {
             $('#back-btn').click();
-            // console.log($('#template-name').val());
         });
     });
 });
@@ -276,7 +256,6 @@ $('#save-template').click(function() {
 $('#img-save').click(function() {
     $(window).scrollTop(0);
     html2canvas(document.querySelector("#ascii-text")).then(canvas => {
-        console.log();
         var download = document.getElementById('download');
         download.href = canvas.toDataURL();
         download.download='ascii-image.png';
@@ -285,7 +264,6 @@ $('#img-save').click(function() {
 });
 
 $('.dropdown-item').click(function() {
-    console.log($(this).text())
     $.ajax({
             url: '/load-template',
             type: 'POST',
@@ -320,7 +298,6 @@ $('.dropdown-item').click(function() {
                 $('#colored-btn').prop('disabled', false);
             }
             var font = data['font_size'].toString() + 'pt';
-            console.log(font);
             $('#ascii-text').css("font-size", font);
             $(window).scrollTop(0);
         });
@@ -337,7 +314,6 @@ $(document).ready(function() {
             type: 'GET',
         }).done(function (data) {
             login = data;
-            console.log(login)
             if (login !== 'false') {
                 $('#modal-btn').prop('disabled', false);
                 $('#select-btn').prop('disabled', false);
@@ -348,6 +324,4 @@ $(document).ready(function() {
                 $('#login-btn').html('Вход');
             }
         });
-    // var myModal = new bootstrap.Modal(document.getElementById('myModal'));
-    // myModal.toggle();
 });

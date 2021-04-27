@@ -40,8 +40,6 @@ def img_to_ascii(image, settings={}):
     saturation = settings.get(SATURATION, 100)
     width, height = image.size
 
-    # font = QtGui.QFont("Courier New", font_size)
-    # fm = QFontMetrics(font)
     let_wid = FONT_SIZE_LIST[font_size - 1][0]
     let_hei = FONT_SIZE_LIST[font_size - 1][1]
 
@@ -95,17 +93,12 @@ def img_to_ascii(image, settings={}):
     result = result.replace('\t', '\\')
     if color == COLOURED:
         result = Markup(result_color)
-    # print(result.replace('\n', '<br/>'), font_size, (line_count, width // w - 1),
-    #       (let_wid * (width // w), let_hei * line_count))
-    # return result, result_color, (let_wid * (width // w), let_hei * line_count), (
-    # line_count, width // w - 1), font_size, extra
     return result, font_size
 
 
 def convert(filename):
     image = Image.open(f'static/uploads/{filename}')
     width, height = image.size
-    # h = height // self.line_count_spb.value()
     h = height // 50
     sort_font_size_list = sorted(FONT_SIZE_LIST, key=lambda x: abs(h - x[1]))
     font_size = FONT_SIZE_LIST.index(sort_font_size_list[0]) + 1
@@ -361,7 +354,6 @@ def load_image():
             cur.execute(f"UPDATE users SET images='{json.dumps(USER['images'])}' WHERE login='{USER['login']}'")
             con.commit()
         return 'True'
-        # return render_template('index.html', imageLoad='loaded')
 
 
 @app.route('/get-settings', methods=['GET'])
