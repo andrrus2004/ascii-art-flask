@@ -1,5 +1,4 @@
 from flask import Flask, flash, request, redirect, render_template, Markup, jsonify
-from werkzeug.utils import secure_filename
 from PIL import Image
 import datetime as dt
 import sqlite3
