@@ -21,8 +21,8 @@
 <body>
     <header class="sticky-top d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom" id="top">
         <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
-            <li><a href="#" class="nav-link px-2 link-secondary to-top">ASCII Art Converter</a></li>
-            <li><a href="#" class="nav-link px-2 link-dark to-top">Конвертировать</a></li>
+            <li><a href="/" class="nav-link px-2 link-secondary to-top">ASCII Art Converter</a></li>
+            <li><a href="/" class="nav-link px-2 link-dark to-top">Конвертировать</a></li>
             <li><a href="#examples" class="nav-link px-2 link-dark">Примеры</a></li>
 <!--            <li><a href="#" class="nav-link px-2 link-dark">Поддержка</a></li>-->
         </ul>
@@ -107,7 +107,8 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <input type="text" class="form-control" id="template-name">
+                    <input class="form-control invalid" type="text" id="temp-name" >
+                    <div class="text-error"><p data-for="login" id="temp-name-error"></p></div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="back-btn">Отмена</button>

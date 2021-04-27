@@ -1,4 +1,5 @@
 let login;
+let names;
 
 $(function(){
     $(".twentytwenty-container").twentytwenty({
@@ -185,24 +186,30 @@ $("#settings-form").submit(function() {
 $('#let_num').click(function() {
     if (!($('#let_num').is(':checked') || $('#punctuation').is(':checked') || $('#special').is(':checked'))) {
         $('#save-settings').prop('disabled', true);
+        $('#modal-btn').prop('disabled', true);
     } else {
         $('#save-settings').prop('disabled', false);
+        $('#modal-btn').prop('disabled', false);
     }
 });
 
 $('#punctuation').click(function() {
     if (!($('#let_num').is(':checked') || $('#punctuation').is(':checked') || $('#special').is(':checked'))) {
         $('#save-settings').prop('disabled', true);
+        $('#modal-btn').prop('disabled', true);
     } else {
         $('#save-settings').prop('disabled', false);
+        $('#modal-btn').prop('disabled', false);
     }
 });
 
 $('#special').click(function() {
     if (!($('#let_num').is(':checked') || $('#punctuation').is(':checked') || $('#special').is(':checked'))) {
         $('#save-settings').prop('disabled', true);
+        $('#modal-btn').prop('disabled', true);
     } else {
         $('#save-settings').prop('disabled', false);
+        $('#modal-btn').prop('disabled', false);
     }
 });
 
@@ -219,30 +226,50 @@ $('#login-btn').click(function() {
 });
 
 $('#save-template').click(function() {
-    var groups_input = Array()
-    if ($('#let_num').is(':checked')) {
-        groups_input.push('let_num');
-    }
-    if ($('#punctuation').is(':checked')) {
-        groups_input.push('punctuation');
-    }
-    if ($('#special').is(':checked')) {
-        groups_input.push('special');
-    }
     $.ajax({
-        url: '/new-template',
-        type: 'POST',
-        contentType: 'application/json',
-        data: JSON.stringify({
-            name: $('#template-name').val(),
-            font_size: $("#font_size").val(),
-            line_count: $("#lines_count").val(),
-            auto_size: false,
-            groups: groups_input
-        })
-    }).done(function (data) {
-        $('#back-btn').click();
-        // console.log($('#template-name').val());
+            url: '/get-temp-names',
+            type: 'GET',
+        }).done(function (data) {
+            names = Array(data);
+            console.log(names)
+            val = $('#temp-name').val();
+            console.log(names)
+            console.log(val === names[1]);
+            console.log(names.includes(val))
+            if (val === '') {
+                $('#temp-name-error').text('Введите название нового шаблона');
+                return false;
+            } else if (names[0][val] !== undefined) {
+                $('#temp-name-error').text('Шаблон с таким названием уже существует');
+                return false;
+            } else {
+                $('#temp-name-error').text('');
+            }
+        let groups_input = Array();
+        if ($('#let_num').is(':checked')) {
+            groups_input.push('let_num');
+        }
+        if ($('#punctuation').is(':checked')) {
+            groups_input.push('punctuation');
+        }
+        if ($('#special').is(':checked')) {
+            groups_input.push('special');
+        }
+        $.ajax({
+            url: '/new-template',
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify({
+                name: val,
+                font_size: $("#font_size").val(),
+                line_count: $("#lines_count").val(),
+                auto_size: false,
+                groups: groups_input
+            })
+        }).done(function (data) {
+            $('#back-btn').click();
+            // console.log($('#template-name').val());
+        });
     });
 });
 
@@ -276,9 +303,21 @@ $('.dropdown-item').click(function() {
                 document.getElementById('ascii-text').innerHTML = "";
                 $('#ascii-text').append(data['ascii']);
                 $('#ascii-text').css("background-color", 'black');
+                $('#colored-ch').addClass('text-white bg-primary border-primary');
+                $('#colored-card').addClass('border-primary');
+                $('#colored-btn').prop('disabled', true);
+                $('#black-ch').removeClass('text-white bg-primary border-primary');
+                $('#black-card').removeClass('border-primary');
+                $('#black-btn').prop('disabled', false);
             } else if (data['color'] === 'black') {
                 $('#ascii-text').text(data['ascii']);
                 $('#ascii-text').css("background-color", 'white');
+                $('#black-ch').addClass('text-white bg-primary border-primary');
+                $('#black-card').addClass('border-primary');
+                $('#black-btn').prop('disabled', true);
+                $('#colored-ch').removeClass('text-white bg-primary border-primary');
+                $('#colored-card').removeClass('border-primary');
+                $('#colored-btn').prop('disabled', false);
             }
             var font = data['font_size'].toString() + 'pt';
             console.log(font);

@@ -175,7 +175,7 @@ def log_in():
 def get_login():
     if request.method == 'GET':
         if LOGIN:
-            return USER['login']
+            return str(USER['login'])
         return 'false'
 
 
@@ -375,6 +375,20 @@ def upload_file():
     if request.method == 'GET':
         text, font_size = convert(FILENAME)
         return {'ascii': text, 'font_size': font_size, 'color': SETTINGS[COLOR]}
+
+
+@app.route('/get-temp-names', methods=['GET'])
+def get_temp_names():
+    global LOGIN, USER
+    if request.method == 'GET':
+        names = dict()
+        if LOGIN:
+            for d in USER['templates']['templates']:
+                for key, value in d.items():
+                    if key == 'name':
+                        names[value] = 1
+        print(names)
+        return jsonify(names)
 
 
 @app.route('/new-template', methods=['POST'])

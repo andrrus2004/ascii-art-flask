@@ -14,6 +14,12 @@ header div {
   margin-right: 20px;
 }
 
+.text-error {
+    color: red;
+    font-size: 20px;
+    height: 25px;
+}
+
 .twentytwenty-container img {
     width: 100%;
 }
