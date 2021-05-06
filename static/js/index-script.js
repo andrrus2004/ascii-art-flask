@@ -173,8 +173,10 @@ $('#let_num').click(function() {
         $('#save-settings').prop('disabled', true);
         $('#modal-btn').prop('disabled', true);
     } else {
+        if (login !== 'false') {
+            $('#modal-btn').prop('disabled', false);
+        }
         $('#save-settings').prop('disabled', false);
-        $('#modal-btn').prop('disabled', false);
     }
 });
 
@@ -183,8 +185,10 @@ $('#punctuation').click(function() {
         $('#save-settings').prop('disabled', true);
         $('#modal-btn').prop('disabled', true);
     } else {
+        if (login !== 'false') {
+            $('#modal-btn').prop('disabled', false);
+        }
         $('#save-settings').prop('disabled', false);
-        $('#modal-btn').prop('disabled', false);
     }
 });
 
@@ -193,8 +197,10 @@ $('#special').click(function() {
         $('#save-settings').prop('disabled', true);
         $('#modal-btn').prop('disabled', true);
     } else {
+        if (login !== 'false') {
+            $('#modal-btn').prop('disabled', false);
+        }
         $('#save-settings').prop('disabled', false);
-        $('#modal-btn').prop('disabled', false);
     }
 });
 
